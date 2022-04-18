@@ -4,9 +4,10 @@ import * as data from './data.js'
 
 
 http.createServer((req,res) => {
-    var path = req.url.toLowerCase();
     let url = req.url.split("?"); // separate route from query string
     let query = parse(url[1]); // convert query string to a JS object
+    // var path = req.url.toLowerCase();
+    var path = req.url.replace(/\/?(?:\?.*)?$/, '').toLowerCase();
     switch(path) {
         case '/':
             res.writeHead(200, {'Content-Type': 'text/plain'});
@@ -18,8 +19,9 @@ http.createServer((req,res) => {
             break;
         case '/detail':
             res.writeHead(200, {'Content-Type': 'text/plain'});
-            // res.end(JSON.stringify(data.getItem(query)));
+            // console.log("1: " + JSON.stringify(data.getItem(query.name)))
             res.end(JSON.stringify(data.getItem(query.name)));
+            break;
         default:
             res.writeHead(404, {'Content-Type': 'text/plain'});
             res.end('The page('+ path +') was not found!');
