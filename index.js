@@ -6,8 +6,9 @@ import * as data from './data.js'
 http.createServer((req,res) => {
     let url = req.url.split("?"); // separate route from query string
     let query = parse(url[1]); // convert query string to a JS object
-    // var path = req.url.toLowerCase();
-    var path = req.url.replace(/\/?(?:\?.*)?$/, '').toLowerCase();
+    // var path = req.url.replace(/\/?(?:\?.*)?$/, '').toLowerCase();
+    let path = url[0].toLowerCase();
+
     switch(path) {
         case '/':
             res.writeHead(200, {'Content-Type': 'text/plain'});
