@@ -1,34 +1,42 @@
-import http from 'http';
-import { parse } from "querystring"
-import * as data from './data.js'
+// import http from 'http';
+// import { parse } from "querystring"
+import * as data from './data.js';
+import express from 'express';
+
+const app = express();
+app.set('port', process.env.PORT || 3000);
+app.use(express.static('./public')); // set location for static files
+// This has be deprecated: app.use(express.urlencoded()); //Parse URL-encoded bodies
+app.use(express.urlencoded({extended: true}));
+app.use(express.json());
+app.set("view engine", "ejs");
+
+app.get('/', (req, res) => {
+    res.type('text/html');
+    res.render('home', { poses: data.getAll()});
+})
 
 
-http.createServer((req,res) => {
-    let url = req.url.split("?"); // separate route from query string
-    let query = parse(url[1]); // convert query string to a JS object
-    // var path = req.url.replace(/\/?(?:\?.*)?$/, '').toLowerCase();
-    let path = url[0].toLowerCase();
+app.get('/detail', (req,res) => {
+    res.type('text/html');
+    let result = data.getItem(req.query.name);
+    res.render('detail', { poses: req.query.name, result });
+});
 
-    switch(path) {
-        case '/':
-            res.writeHead(200, {'Content-Type': 'text/plain'});
-            res.end(JSON.stringify(data.getAll()));
-            break;
-        case '/about':
-            res.writeHead(200, {'Content-Type': 'text/plain'});
-            res.end('About page');
-            break;
-        case '/detail':
-            res.writeHead(200, {'Content-Type': 'text/plain'});
-            // console.log("1: " + JSON.stringify(data.getItem(query.name)))
-            res.end(JSON.stringify(data.getItem(query.name)));
-            break;
-        default:
-            res.writeHead(404, {'Content-Type': 'text/plain'});
-            res.end('The page('+ path +') was not found!');
-            break;
-    }
+// send plain text response
+app.get('/about', (req,res) => {
+    res.type('text/plain');
+    res.send('About page');
+});
 
-}).listen(process.env.PORT || 3000);
+// define 404 handler
+app.use((req,res) => {
+    res.type('text/plain');
+    res.status(404);
+    res.send('404 - Not found');
+});
 
+app.listen(app.get('port'), () => {
+    console.log('Express started');
+});
 

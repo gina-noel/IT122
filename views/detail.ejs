@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<header>
+</header>
+<body>
+<main>
+    <h1>Yoga Pose Details</h1>
+    <div class="details">
+        <% if (result) { %>
+        <h2><%= result.name %> Pose</h2>
+
+        <h4>Health Benefits: <i> <%= result.benefit %> </i></h4>
+        <h4>Ability Level: <i> <%= result.ability %></i></h4>
+        <h4>Symbolism: <i> <%= result.symbol %></i></4>
+        <% } else { %>
+            not found
+        <% } %>
+
+        <h4><a href="/">Back to Poses</a></h4>
+    </div>
+</body>
+</main>
+</html>
+
+</main>
+</body>
+
+
