@@ -5,7 +5,8 @@
   "description": "it122 Spring 2022",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint **/*.js"
   },
   "keywords": [],
   "author": "Gina Noel",
@@ -22,5 +23,10 @@
     "ejs": "^3.1.7",
     "express": "^4.17.3",
     "nodemon": "^2.0.15"
+  },
+  "devDependencies": {
+    "chai": "^4.3.6",
+    "eslint": "^8.14.0",
+    "mocha": "^9.2.2"
   }
 }
