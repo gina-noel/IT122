@@ -6,45 +6,48 @@ let poses = [
     {name: "Bridge", benefit: "opening", ability: "intermediate", symbol: "bond"},
 
 ]
-// Returns all objects in the array
+// Returns all objects in the posses array
 const getAll = () => {
     return poses;
 }
 // console.log(getAll());
-
-const getItem = (url) => {
+// Returns a specific pose or item in the poses array
+const getItem = (pose) => {
     // search the poses array
-    return poses.find((pose) => {
-        return pose.name === url;
+    return poses.find((poseName) => {
+        return poseName.name === pose;
     });
 }
 
-const addItem = (item) => {
-    const newItem = getItem(item.name);
+// Adds a pose to the poses array via the name field
+const addItem = (pose) => {
+    const newPose = getItem(pose.name);
     let msg = '';
-    if (newItem) {
-        msg = item.name + ' pose already exists!'
+    if (newPose) {
+        msg = pose.name + ' pose already exists!'
         // console.log("item exists");
     } else {
-        poses.push(item);
-        msg = item.name + ' pose has been added!'
+        poses.push(pose);
+        msg = pose.name + ' pose has been added!'
         // console.log("item added");
     }
     return { result: msg };
 }
 
-const deleteItem = (item) => {
-    const newItem = getItem(item.name);
+// first checks to see if the pose is already in the poses arrays.
+// if the pose exists, it removes it from the poses array
+const deleteItem = (pose) => {
+    const newPose = getItem(pose.name);
     let msg = '';
-    if (newItem) {
-        const index = poses.indexOf(newItem);
-        item.slice(index, 1);
-        msg = item.name + ' pose was deleted!'
+    if (newPose) {
+        const index = poses.indexOf(newPose);
+        poses.splice(index, 1);
+        msg = pose.name + ' pose was deleted!'
         // console.log("item deleted");
         // console.log(poses);
 
     } else {
-        msg = item.name + ' pose was not found!'
+        msg = pose.name + ' pose was not found!'
         // console.log("item not deleted");
     }
     return { result: msg };

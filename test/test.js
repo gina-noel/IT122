@@ -29,7 +29,7 @@ describe("data.js module", () => {
     })
 
     it("returns deleteItem was not found", function() {
-        let result = data.deleteItem({name: "test", benefit: "test", ability: "test", symbol: "test"});
-        expect(result).to.deep.equal({result: "test pose was not found!"});
+        let result = data.deleteItem({name: "blah", benefit: "test", ability: "test", symbol: "test"});
+        expect(result).to.deep.equal({result: "blah pose was not found!"});
     })
 });
