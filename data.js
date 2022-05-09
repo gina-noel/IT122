@@ -1,9 +1,9 @@
 let poses = [
-    {name: "Tree", benefit: "balance", ability: "easy", symbol: "universe"},
-    {name: "Pigeon", benefit: "flexibility", ability: "advanced", symbol: "confidence"},
-    {name: "Mountain", benefit: "concentration", ability: "easy", symbol: "power"},
-    {name: "Warrior", benefit: "circulation", ability: "intermediate", symbol: "strength"},
-    {name: "Bridge", benefit: "opening", ability: "intermediate", symbol: "bond"},
+    {name: "Tree", benefit: "Balance", ability: "Easy", symbol: "Universe"},
+    {name: "Pigeon", benefit: "Flexibility", ability: "Advanced", symbol: "Confidence"},
+    {name: "Mountain", benefit: "Concentration", ability: "Easy", symbol: "Power"},
+    {name: "Warrior", benefit: "Circulation", ability: "Intermediate", symbol: "Strength"},
+    {name: "Bridge", benefit: "Opening", ability: "Intermediate", symbol: "Bond"},
 
 ]
 // Returns all objects in the posses array
