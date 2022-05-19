@@ -30,11 +30,10 @@ app.get('/detail', (req,res,next) => {
 });
 
 app.get('/delete', (req,res,next) => {
-    // var poseName = Poses.findOne({ name: req.query.name }).lean()
     let poseName = req.query.name
     Poses.deleteOne({ name: req.query.name }).lean()
         .then(() => {
-            res.render("delete", {poseName});
+            res.send(req.query.name + " has been deleted");
         })
         .catch(err => next(err));
 });
