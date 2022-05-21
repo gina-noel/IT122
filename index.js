@@ -101,10 +101,10 @@ app.post('/api/add1', (req, res, next) => {
 
 app.post('/api/add2', (req, res, next) => {
     const newPose = new Poses({
-                        "name":req.body.name,
-                        "benefit": req.body.benefit,
-                        "ability": req.body.ability,
-                        "symbol": req.body.symbol
+        "name":req.body.name,
+        "benefit": req.body.benefit,
+        "ability": req.body.ability,
+        "symbol": req.body.symbol
 
     })
     Poses.create(newPose)
@@ -135,7 +135,7 @@ app.get('/', (req, res, next) => {
 });
 
 app.get('/detail', (req,res,next) => {
-        // db query can use request parameters
+    // db query can use request parameters
     Poses.findOne({ name: req.query.name }).lean()
         .then((pose) => {
             res.render('detail', {result: pose} );
