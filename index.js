@@ -53,7 +53,7 @@ app.delete('/api/delete/:name', (req, res, next) => {
 });
 
 
-// Does not work! it only adds to the Database:
+// Does not work! Maybe I don't know how to use postman.. it only adds this the Database:
 // _id:ObjectId("628bcd16bf5b831e8125f5bb"
 // name:null
 // __v:0
