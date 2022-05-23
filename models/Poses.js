@@ -16,8 +16,7 @@ mongoose.connection.on('open', () => {
 // define data model as JSON key/value pairs
 // values indicate the data type of each key
 const posesSchema = new Schema({
-    // title: { type: String, required: true },
-    name: String,
+    name: { type: String, required: true },
     benefit: String,
     ability: String,
     symbol: String

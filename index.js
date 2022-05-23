@@ -52,77 +52,29 @@ app.delete('/api/delete/:name', (req, res, next) => {
         .catch(err => next(err))
 });
 
-// // api
-// app.post('/api/add', (req, res) => {
-//     Poses.findOne({"name": req.body.name}).lean()
-//         .then((pose) => {
-//             if(pose === null) {
-//                 Poses.create({
-//                         "name":req.body.name,
-//                         "benefit": req.body.benefit,
-//                         "ability": req.body.ability,
-//                         "symbol": req.body.symbol
-//                     });
-//                 res.json({"message": "Pose added."});
-//             } else {
-//                 res.status(500).send("Pose already exists.");
-//             }})
-// });
 
-// app.post('/api/add/', (req,res, next) => {
-//     // find & update existing item, or add new
-//     if (!req.body._id) { // insert new document
-//         let pose = new Poses(req.body);
-//         pose.save((err,newPose) => {
-//             if (err) return next(err);
-//             res.json({updated: 0, _id: newPose._id});
-//         });
-//     } else { // update existing document
-//         Poses.updateOne({ _id: req.body._id}, {name:req.body.name, benefit: req.body.benefit, ability: req.body.ability, symbol: req.body.symbol }, (err, result) => {
-//             if (err) return next(err);
-//             res.json({updated: result.nModified, _id: req.body._id});
-//         });
-//     }
-// });
-
-
-app.post('/api/add1', (req, res, next) => {
-    const newPose = {'name':'Chair', 'benefit':'Stability', 'ability': 'Easy', 'symbol':'Grounding' }
-    Poses.create(newPose)
-        .then((pose) => {
-            if (pose !== null) {
-                res.json(pose);
-            } else {
-                return res.status(400).send(req.params.name + ' not found');
-            }
-        })
-        .catch(err => next(err))
+// Does not work! it only adds to the Database:
+// _id:ObjectId("628bcd16bf5b831e8125f5bb"
+// name:null
+// __v:0
+app.post("/api/add", (req,res,next) => {
+    const newPose = {"name":req.body.name, "benefit": req.body.benefit, "ability": req.body.ability, "symbol": req.body.symbol}
+    Poses.updateOne({"name": req.body.name}, newPose, {upsert:true}, (err, result) => {
+        if (err) return next(err);
+        console.log(result);
+        res.json({"message": "pose was added"})
+    });
 });
 
-app.post('/api/add2', (req, res, next) => {
-    const newPose = new Poses({
-        "name":req.body.name,
-        "benefit": req.body.benefit,
-        "ability": req.body.ability,
-        "symbol": req.body.symbol
-
-    })
-    Poses.create(newPose)
-        .then((pose) => {
-            if (pose !== null) {
-                res.json(pose);
-            } else {
-                return res.status(400).send(req.params.name + ' not found');
-            }
-        })
-        .catch(err => next(err))
+// this one works updates and adds
+app.post("/api/add1", (req,res,next) => {
+    const newPose = {"name":"Tree", "benefit":"Stability", "ability": "Easy123", "symbol": "Grounding"}
+    Poses.updateOne({"name":"Tree"}, newPose, {upsert:true}, (err, result) => {
+        if (err) return next(err);
+        console.log(result);
+        res.json({"message": "pose was added"})
+    });
 });
-
-
-
-
-
-
 
 
 app.get('/', (req, res, next) => {
