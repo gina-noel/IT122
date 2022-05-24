@@ -53,10 +53,7 @@ app.delete('/api/delete/:name', (req, res, next) => {
 });
 
 
-// Does not work! Maybe I don't know how to use postman.. it only adds this the Database:
-// _id:ObjectId("628bcd16bf5b831e8125f5bb"
-// name:null
-// __v:0
+// works! make sure to use JSON in postman
 app.post("/api/add", (req,res,next) => {
     const newPose = {"name":req.body.name, "benefit": req.body.benefit, "ability": req.body.ability, "symbol": req.body.symbol}
     Poses.updateOne({"name": req.body.name}, newPose, {upsert:true}, (err, result) => {
