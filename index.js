@@ -52,7 +52,6 @@ app.delete('/api/delete/:name', (req, res, next) => {
         .catch(err => next(err))
 });
 
-
 // works! make sure to use JSON in postman
 app.post("/api/add", (req,res,next) => {
     const newPose = {"name":req.body.name, "benefit": req.body.benefit, "ability": req.body.ability, "symbol": req.body.symbol}
@@ -64,6 +63,7 @@ app.post("/api/add", (req,res,next) => {
 });
 
 // this one works updates and adds
+// api
 app.post("/api/add1", (req,res,next) => {
     const newPose = {"name":"Tree", "benefit":"Stability", "ability": "Easy123", "symbol": "Grounding"}
     Poses.updateOne({"name":"Tree"}, newPose, {upsert:true}, (err, result) => {
@@ -73,16 +73,28 @@ app.post("/api/add1", (req,res,next) => {
     });
 });
 
+// regular page - pre-react
+// app.get('/', (req, res, next) => {
+//     Poses.find({}).lean()
+//         .then((poses) => {
+//             // respond to browser only after db query completes
+//             res.render('home', {poses});
+//         })
+//         .catch(err => next(err))
+// });
 
+// react!
 app.get('/', (req, res, next) => {
     Poses.find({}).lean()
         .then((poses) => {
             // respond to browser only after db query completes
-            res.render('home', {poses});
+            // res.render('home', {poses});
+            res.render('home_react', { poses: JSON.stringify(poses) });
         })
         .catch(err => next(err))
 });
 
+//reg - pre-react
 app.get('/detail', (req,res,next) => {
     // db query can use request parameters
     Poses.findOne({ name: req.query.name }).lean()
@@ -91,7 +103,7 @@ app.get('/detail', (req,res,next) => {
         })
         .catch(err => next(err));
 });
-
+// regular - pre-react
 app.get('/delete', (req,res,next) => {
     let poseName = req.query.name
     Poses.deleteOne({ name: req.query.name }).lean()
@@ -102,19 +114,7 @@ app.get('/delete', (req,res,next) => {
 
 });
 
-
-// app.get('/', (req, res) => {
-//     res.type('text/html');
-//     res.render('home', { poses: data.getAll()});
-// })
-//
-// app.get('/detail', (req,res) => {
-//     res.type('text/html');
-//     let result = data.getItem(req.query.name);
-//     res.render('detail', { poses: req.query.name, result });
-// });
-
-// send plain text response
+// send plain text response - pre-react
 app.get('/about', (req,res) => {
     res.type('text/plain');
     res.send('About page');
