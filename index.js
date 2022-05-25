@@ -71,9 +71,12 @@ app.delete('/api/deleteOld/:name', (req, res, next) => {
 app.post("/api/add", (req,res,next) => {
     const newPose = {"name":req.body.name, "benefit": req.body.benefit, "ability": req.body.ability, "symbol": req.body.symbol}
     Poses.updateOne({"name": req.body.name}, newPose, {upsert:true}, (err, result) => {
-        if (err) return next(err);
-        console.log(result);
-        res.json({"message": "pose was added"})
+        // if (err) return next(err);
+        if (err || !name){
+            res.status(404).json({"Error": "Pose was not added"});
+      } else {
+            res.json({"message": "pose was added"})
+        }
     });
 });
 
@@ -96,6 +99,16 @@ app.post("/api/add1", (req,res,next) => {
 //             res.render('home', {poses});
 //         })
 //         .catch(err => next(err))
+// });
+
+// this one works, before update above
+// app.post("/api/add", (req,res,next) => {
+//     const newPose = {"name":req.body.name, "benefit": req.body.benefit, "ability": req.body.ability, "symbol": req.body.symbol}
+//     Poses.updateOne({"name": req.body.name}, newPose, {upsert:true}, (err, result) => {
+//         if (err) return next(err);
+//         console.log(result);
+//         res.json({"message": "pose was added"})
+//     });
 // });
 
 // react!
