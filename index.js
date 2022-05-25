@@ -38,8 +38,22 @@ app.get('/api/detail/:name', (req, res, next) => {
         })
         .catch(err => next(err))
 });
-//uses api
+//uses api's
+
+// this one checks return
 app.delete('/api/delete/:name', (req, res, next) => {
+    let name = req.params.name;
+    Poses.deleteOne({name: name}, (err, result) => {
+        if (result.deletedCount === 0) {
+            res.status(500).json({"message":" was not deleted"});
+        } else {
+            res.status(200).json({"message": `${name} was removed`});
+        }
+    });
+});
+
+// old one
+app.delete('/api/deleteOld/:name', (req, res, next) => {
     Poses.deleteOne({ name: req.params.name })
         .then((pose) => {
             console.log(pose + "delete");
@@ -51,6 +65,7 @@ app.delete('/api/delete/:name', (req, res, next) => {
         })
         .catch(err => next(err))
 });
+
 
 // works! make sure to use JSON in postman
 app.post("/api/add", (req,res,next) => {
