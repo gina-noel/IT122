@@ -15,31 +15,77 @@
 
 <div id="root" class="container"></div>
 <script type="text/babel">
-    // const ReactDOM = require("ejs");
 
     const poses = <%- poses %>;
-    console.log(poses)
-    // click event handler
-    const showDetail = (event) => {
-        // <a href={"/detail?title="+item.title}>
-        console.log(event.target)
-        console.log(event.target.innerText)
-        console.log(event.target.id)
-        window.location.href = "/detail?name=" + event.target.innerText;
-    }
+
     const Poses = (props) => {
-        // props is an array
-        console.log(props)
         const listItems = props.data.map((item) =>
             <li key={item._id} id={item._id} onClick={props.clickHandler}>
                 {item.name}
             </li>);
         return <ul>{listItems}</ul>
     }
-    ReactDOM.render(
-        <div><Poses data={poses} clickHandler={showDetail}  /></div>,
-        document.getElementById('root')
-    );
+
+    const ItemDetail = (props) => {
+        return (
+            <div>
+                <hr />
+                <h3>Pose Details:</h3>
+                <form>
+                    Name:  <input type="text" name="name" value={props.item.name || ""} onChange={props.handleChange} /><br/><br/>
+                    Benefit: <input type="text" name="benefit" value={props.item.benefit || ""} onChange={props.handleChange} /><br/><br/>
+                    Ability: <input type="text" name="ability" value={props.item.ability || ""} onChange={props.handleChange} /><br/><br/>
+                    Symbol: <input type="text" name="symbol" value={props.item.symbol || ""} onChange={props.handleChange} /><br/><br/>
+                    <button name="clear" onClick={props.clearForm}>Clear</button>&nbsp;
+                </form>
+            </div>
+        )
+    }
+
+        class App extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {
+                items: poses,
+                currentItem: {}
+
+            };
+            this.selectItem = this.selectItem.bind(this);
+            this.handleChange = this.handleChange.bind(this);
+            this.clearForm = this.clearForm.bind(this);
+        }
+
+        // select or click the event handler
+        selectItem = (event) => {
+            const poseFound = this.state.items.find((pose) => {
+                return pose._id === event.target.id;
+        });
+            this.setState({"currentItem": poseFound})
+        }
+
+        handleChange = (event) => {
+            let newItem = this.state.currentItem;
+            newItem[event.target.name] = event.target.value;
+            this.setState({currentItem: newItem})
+        }
+
+        clearForm = () => {
+            this.setState({currentItem: {}})
+        }
+        // render the items
+        render() {
+            return (
+                <div>
+                    <h1>Poses</h1>
+                    <Poses data={this.state.items} clickHandler={this.selectItem}/>
+                    <hr/>
+                    <ItemDetail item={this.state.currentItem} handleChange={this.handleChange} clearForm={this.clearForm}/>
+                </div>);
+        }
+    }
+
+    // not sure why this says it's missing import...
+    ReactDOM.render(  <App />,  document.getElementById('root') );
 
 </script>
 </body>
