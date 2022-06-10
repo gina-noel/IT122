@@ -45,12 +45,41 @@ app.delete('/api/delete/:name', (req, res, next) => {
     let name = req.params.name;
     Poses.deleteOne({name: name}, (err, result) => {
         if (result.deletedCount === 0) {
-            res.status(500).json({"message":" was not deleted"});
+            res.status(500).json({"message": "was not deleted"});
         } else {
             res.status(200).json({"message": `${name} was removed`});
         }
     });
 });
+
+
+app.get('/api/pose/delete/:id', (req,res, next) => {
+    poses.deleteOne({"_id":req.params.id }, (err, result) => {
+        if (err) return next(err);
+        // return # of items deleted
+        res.json({"deleted": result});
+    });
+});
+
+// app.delete('/api/poseName/delete/:id', (req, res, next) => {
+//     Poses.deleteOne({"_id":req.params.id }, (err, result) => {
+//         if (err) return next(err);
+//         // return # of items deleted
+//         console.log(result)
+//         res.json({"deleted": result});
+//     });
+// });
+
+// app.delete('/api/pose/delete/:id', (req, res, next) => {
+//     // let name = req.params.name;
+//     Poses.deleteOne({"_id":req.params.id}, (err, result) => {
+//         if (result.deletedCount === 0) {
+//             res.status(500).json({"message": "was not deleted"});
+//         } else {
+//             res.status(200).json({"message": {"_id":req.params.id} `was removed`});
+//         }
+//     });
+// });
 
 // old one
 app.delete('/api/deleteOld/:name', (req, res, next) => {
@@ -68,7 +97,7 @@ app.delete('/api/deleteOld/:name', (req, res, next) => {
 
 
 // works! make sure to use JSON in postman
-app.post("/api/add", (req,res,next) => {
+app.post("/api/add/", (req,res,next) => {
     const newPose = {"name":req.body.name, "benefit": req.body.benefit, "ability": req.body.ability, "symbol": req.body.symbol}
     Poses.updateOne({"name": req.body.name}, newPose, {upsert:true}, (err, result) => {
         // if (err) return next(err);
@@ -78,6 +107,47 @@ app.post("/api/add", (req,res,next) => {
             res.json({"message": "pose was added"})
         }
     });
+});
+
+// used in home_react.ejs
+app.post('/api/pose/add/', (req,res, next) => {
+    // find & update existing item, or add new
+    console.log(req.body)
+    if (!req.body._id) { // insert new document
+
+        let pose = new Poses({name:req.body.name,benefit:req.body.benefit,ability:req.body.ability, symbol: req.body.symbol });
+        pose.save((err,newPose) => {
+            if (err) return next(err);
+            console.log("Here123" + newPose)
+            res.json({updated: 0, _id: newPose._id});
+        });
+    } else { // update existing document
+        Poses.updateOne({ _id: req.body._id}, {name:req.body.name, benefit: req.body.benefit,ability:req.body.ability, symbol: req.body.symbol }, (err, result) => {
+            if (err) return next(err);
+            res.json({updated: result.nModified, _id: req.body._id});
+        });
+    }
+});
+
+
+
+app.post('/api/v1/add/', (req,res, next) => {
+    // find & update existing item, or add new
+    console.log(req.body)
+    if (!req.body._id) { // insert new document
+
+        let book = new Book({title:req.body.title,author:req.body.author,pubdate:req.body.pubdate});
+        book.save((err,newBook) => {
+            if (err) return next(err);
+            console.log(newBook)
+            res.json({updated: 0, _id: newBook._id});
+        });
+    } else { // update existing document
+        Book.updateOne({ _id: req.body._id}, {title:req.body.title, author: req.body.author, pubdate: req.body.pubdate }, (err, result) => {
+            if (err) return next(err);
+            res.json({updated: result.nModified, _id: req.body._id});
+        });
+    }
 });
 
 // this one works updates and adds
