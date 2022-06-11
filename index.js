@@ -54,32 +54,12 @@ app.delete('/api/delete/:name', (req, res, next) => {
 
 
 app.get('/api/pose/delete/:id', (req,res, next) => {
-    poses.deleteOne({"_id":req.params.id }, (err, result) => {
+    Poses.deleteOne({"_id":req.params.id }, (err, result) => {
         if (err) return next(err);
         // return # of items deleted
         res.json({"deleted": result});
     });
 });
-
-// app.delete('/api/poseName/delete/:id', (req, res, next) => {
-//     Poses.deleteOne({"_id":req.params.id }, (err, result) => {
-//         if (err) return next(err);
-//         // return # of items deleted
-//         console.log(result)
-//         res.json({"deleted": result});
-//     });
-// });
-
-// app.delete('/api/pose/delete/:id', (req, res, next) => {
-//     // let name = req.params.name;
-//     Poses.deleteOne({"_id":req.params.id}, (err, result) => {
-//         if (result.deletedCount === 0) {
-//             res.status(500).json({"message": "was not deleted"});
-//         } else {
-//             res.status(200).json({"message": {"_id":req.params.id} `was removed`});
-//         }
-//     });
-// });
 
 // old one
 app.delete('/api/deleteOld/:name', (req, res, next) => {

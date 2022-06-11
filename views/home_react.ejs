@@ -37,7 +37,7 @@
                     Ability: <input type="text" name="ability" value={props.item.ability || ""} onChange={props.handleChange} /><br/><br/>
                     Symbol: <input type="text" name="symbol" value={props.item.symbol || ""} onChange={props.handleChange} /><br/><br/>
                 </form>
-                <button name="save" onClick={props.onSave}>Save</button>&nbsp;
+                <button name="save" onClick={props.saveItem}>Save</button>&nbsp;
                 <button name="clear" onClick={props.clearForm}>Clear</button>&nbsp;
                 <button name="delete" onClick={props.deleteItem}>Delete</button>&nbsp;
             </div>
@@ -55,11 +55,10 @@
             this.selectItem = this.selectItem.bind(this);
             this.handleChange = this.handleChange.bind(this);
             this.clearForm = this.clearForm.bind(this);
-            this.onSave = this.onSave.bind(this);
+            this.saveItem = this.saveItem.bind(this);
             this.deleteItem = this.deleteItem.bind(this);
         }
 
-        // select or click the event handler
         selectItem = (event) => {
             const poseFound = this.state.items.find((pose) => {
                 return pose._id === event.target.id;
@@ -77,11 +76,11 @@
             this.setState({currentItem: {}})
         }
 
-        onSave = () => {
+        saveItem = () => {
             if (this.state.currentItem === {})
                 return
             let newPose = this.state.currentItem;
-            // console.log("onsave: " + newPose);
+            // console.log("saveItem: " + newPose);
             fetch('/api/pose/add/', {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
@@ -100,6 +99,7 @@
                     }
                 });
         }
+
         deleteItem = () => {
             console.log(this.state.currentItem)
             if (this.state.currentItem === {}) return
@@ -117,26 +117,7 @@
                     }
                 })
         }
-            // onDelete = () => {
-            //     console.log(this.state.currentItem)
-            //     if (this.state.currentItem === {}) return
-            //     let deleteName = this.state.currentItem.name
-            //     let url = "/api/delete/" + deleteName;
-            //     console.log(url);
-            //     fetch(url)
-            //         .then(res => res.json())
-            //         .then((items) => {
-            //             if (items.deleted.deletedCount > 0) {
-            //                 let newlist = this.state.items.filter(items => {
-            //                     return items.name !== deleteName;
-            //                 })
-            //                 this.setState({items: newlist, currentItem: {}})
-            //             }
-            //         })
-            // }
 
-
-            // render the items
         render() {
             return (
                 <div>
@@ -144,7 +125,7 @@
                     <Poses data={this.state.items} clickHandler={this.selectItem}/>
                     <hr/>
                     <ItemDetail item={this.state.currentItem} handleChange={this.handleChange}
-                                clearForm={this.clearForm} onSave={this.onSave} deleteItem={this.deleteItem}/>
+                                clearForm={this.clearForm} saveItem={this.saveItem} deleteItem={this.deleteItem}/>
                 </div>);
         }
     }
